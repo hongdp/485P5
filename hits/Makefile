@@ -10,7 +10,7 @@ EXECUTABLE 	= eecs485pa5h
 OUTPUT_FILE = $(wildcard *.out)
 
 #Default Flags
-CXXFLAGS = -std=c++11 -Wall -Werror -Wextra -Wvla -pedantic
+CXXFLAGS = -std=c++11 -Wall -Wextra -Wvla -pedantic
 
 # make release - will compile "all" with $(CXXFLAGS) and the -O3 flag
 #				 also defines NDEBUG so that asserts will not check
