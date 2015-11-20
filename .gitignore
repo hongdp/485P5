@@ -1,3 +1,4 @@
-/eecs485pa5h/hits.net.txt
-/eecs485pa5h/hits_invindex
-/eecs485pa5p/small.net.txt
+/hits/hits.net.txt
+/hits/hits_invindex
+/pagerank/small.net.txt
+/pagerank/large.net.txt
