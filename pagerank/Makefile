@@ -5,9 +5,7 @@ SOURCES 	= $(wildcard *.cpp)
 # list of objects used in project
 OBJECTS		= $(SOURCES:%.cpp=%.o)
 # name of the executable produced by the top level
-EXECUTABLE 	= market
-# name of the tar ball created for submission
-SUBMIT_FILE = submit.tar.gz
+EXECUTABLE 	= eecs485pa5p
 # name of the output file
 OUTPUT_FILE = $(wildcard *.out)
 
@@ -40,17 +38,7 @@ all: $(OBJECTS)
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE) $(SUBMIT_FILE) $(OUTPUT_FILE)
 
-
-# make submit.tar.gz - cleans, runs dos2unix, creates tarball
-MY_FILES=$(wildcard Makefile *.h *.cpp test-*.txt)
-$(SUBMIT_FILE): $(MY_FILES)
-	dos2unix $(MY_FILES)
-	tar -vczf $(SUBMIT_FILE) $(MY_FILES)
-
-# shortcut for make submit.tar.gz (make submit)
-submit: submit.tar.gz
-
 # these targets do not create any files
-.PHONY: all release debug profile clean submit
+.PHONY: all release debug profile clean
 # disable built-in rules
 .SUFFIXES:
