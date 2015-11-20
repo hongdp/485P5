@@ -9,6 +9,7 @@
 #include "PageNode.h"
 
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -17,20 +18,24 @@ void PageNode::addOutLink(){
 }
 
 void PageNode::calculateNextPR(){
-	nextPR = 0;
-	for (<#initialization#>; <#condition#>; <#increment#>) {
-		<#statements#>
+	nextPR = (1 - d)/N;
+	for (PageNode* nodePtr : contributors) {
+		nextPR += nodePtr->getContribution();
 	}
 }
 
 int PageNode::getCurrentPR(){
-	
+	return currentPR;
 }
 
 void PageNode::updatePR(){
-	
+	currentPR = nextPR;
+	nextPR = 0;
 }
 
-bool PageNode::updatePR(int converge){
-	
+bool PageNode::updatePR(double converge){
+	bool returnVal;
+	if (abs(currentPR - nextPR)/currentPR <= converge ) {
+		<#statements#>
+	}
 }
