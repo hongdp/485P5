@@ -24,7 +24,7 @@ void PageNode::calculateNextPR(){
 	}
 }
 
-int PageNode::getCurrentPR(){
+int PageNode::getCurrentPR() const {
 	return currentPR;
 }
 
@@ -34,8 +34,24 @@ void PageNode::updatePR(){
 }
 
 bool PageNode::updatePR(double converge){
-	bool returnVal;
+	bool returnVal = false;
 	if (abs(currentPR - nextPR)/currentPR <= converge ) {
-		<#statements#>
+		returnVal = true;
 	}
+	currentPR = nextPR;
+	nextPR = 0;
+	return returnVal;
+}
+
+double PageNode::getContribution() const{
+	return currentPR/numOutLinks;
+}
+
+void PageNode::setGlobalArgs(double d_, int N_){
+	d = d_;
+	N = N_;
+}
+
+void PageNode::addContributor(const PageNode* contributor_ptr){
+	contributors.push_back(contributor_ptr);
 }
