@@ -16,7 +16,7 @@ public:
 	PageNode(double initPR):currentPR(initPR), nextPR(0), numOutLinks(0){};
 	void addOutLink();
 	void calculateNextPR();
-	int getCurrentPR() const;
+	double getCurrentPR() const;
 	void updatePR();
 	bool updatePR(int converge);
 	static void setGlobalArgs(double d, int N);
