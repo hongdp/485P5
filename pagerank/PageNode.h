@@ -15,10 +15,12 @@ class PageNode {
 public:
 	PageNode(double initPR):currentPR(initPR), nextPR(0), numOutLinks(0){};
 	void addOutLink();
+	void addContributor(const PageNode* contributor_ptr);
 	void calculateNextPR();
 	double getCurrentPR() const;
+	double getContribution() const;
 	void updatePR();
-	bool updatePR(int converge);
+	bool updatePR(double converge);
 	static void setGlobalArgs(double d, int N);
 private:
 	double currentPR;
