@@ -1,4 +1,9 @@
 /hits/hits.net.txt
 /hits/hits_invindex
 /pagerank/small.net.txt
+/pagerank/large.net.txt
+/pagerank/.DS_Store
+.DS_Store
+/PageRankProj
 /pagerank/large.net
+
