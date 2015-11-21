@@ -55,6 +55,9 @@ int main(int argc, char const *argv[]) {
   for (size_t i = 0; i < size_t(num_edge); i++) {
     int src, dest;
     infile_stream >> src >> dest;
+	  if (src == dest) {
+		  continue;
+	  }
     PageNode* src_ptr = Node_map[src];
     PageNode* dest_ptr = Node_map[dest];
     dest_ptr->addContributor(src_ptr);
@@ -62,6 +65,16 @@ int main(int argc, char const *argv[]) {
   }
   infile_stream.close();
 
+	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
+		if (it->second->hasNoOutGoing()) {
+			for (auto destIt = Node_map.begin(); destIt != Node_map.end(); destIt++) {
+				if (destIt->second != it->second) {
+					it->second->addOutLink();
+					destIt->second->addContributor(it->second);
+				}
+			}
+		}
+	}
   // determine converge type
   bool use_iter = (converge_type == "-k");
   if (use_iter) {
@@ -90,11 +103,14 @@ int main(int argc, char const *argv[]) {
 
   // output file
   ofstream outfile_stream(OUT_FILE.c_str());
+	double totalRP = 0;
   for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
+	  totalRP += it->second->getCurrentPR();
     outfile_stream << it->first << "," << it->second->getCurrentPR() << endl;
   }
+	cout << totalRP << endl;
   outfile_stream.close();
-
+	
   for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
     delete it->second;
   }

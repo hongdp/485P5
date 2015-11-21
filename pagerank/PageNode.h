@@ -21,11 +21,12 @@ public:
 	double getContribution() const;
 	void updatePR();
 	bool updatePR(double converge);
+	bool hasNoOutGoing();
 	static void setGlobalArgs(double d, int N);
 private:
 	double currentPR;
 	double nextPR;
-	std::vector<PageNode*> contributors;
+	std::vector<const PageNode*> contributors;
 	int numOutLinks;
 	static double d;
 	static int N;

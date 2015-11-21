@@ -5,5 +5,8 @@
 /pagerank/.DS_Store
 .DS_Store
 /PageRankProj
+/HITSProj
 /pagerank/large.net
-
+*.o
+*.net
+/pagerank/pagerank0

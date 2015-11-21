@@ -13,18 +13,21 @@
 
 using namespace std;
 
+double PageNode::d;
+int PageNode::N;
+
 void PageNode::addOutLink(){
 	numOutLinks++;
 }
 
 void PageNode::calculateNextPR(){
 	nextPR = (1 - d)/N;
-	for (PageNode* nodePtr : contributors) {
-		nextPR += nodePtr->getContribution();
+	for (const PageNode* nodePtr : contributors) {
+		nextPR += d*nodePtr->getContribution();
 	}
 }
 
-int PageNode::getCurrentPR() const {
+double PageNode::getCurrentPR() const {
 	return currentPR;
 }
 
@@ -54,4 +57,8 @@ void PageNode::setGlobalArgs(double d_, int N_){
 
 void PageNode::addContributor(const PageNode* contributor_ptr){
 	contributors.push_back(contributor_ptr);
+}
+
+bool PageNode::hasNoOutGoing(){
+	return !numOutLinks;
 }
