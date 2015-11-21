@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cassert>
 #include <cstdlib>
+#include <cmath>
 #include <map>
 #include <set>
 #include <vector>
@@ -120,7 +121,7 @@ int main(int argc, char const *argv[]) {
     auto it_inc = (*it)->getConnectedBegin();
     auto it_end = (*it)->getConnectedEnd();
     int counter = 0;
-    while(counter < 50 && it_inc != it_end) {
+    while(counter < h && it_inc != it_end) {
       PageNode* tmp_node = *it_inc;
       it_inc++;
       if (seed_set.find(tmp_node) != seed_set.end())
@@ -139,14 +140,69 @@ int main(int argc, char const *argv[]) {
     tmp_node->intersectWithBase(base_set);
   }
 
+  // Iterations
   bool use_iter = (converge_type == "-k");
+  if (use_iter) {
+    for (size_t i = size_t(converge_val); i > 0; i--) {
+      // calcualte next auth and hub, accumalate
+      double auth_normalizer = 0;
+      double hub_normalizer = 0;
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        auth_normalizer += pow(tmp_node->calculateNextAuth(), 2);
+        hub_normalizer += pow(tmp_node->calculateNextHub(), 2);
+      }
+      // normalize auth and hub
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        tmp_node->normalizeNextAuth(sqrt(auth_normalizer));
+        tmp_node->normalizeNextHub(sqrt(hub_normalizer));
+      }
+      // update auth and hub
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        tmp_node->update();
+      }
+    }
+  } else {
+    bool break_loop = false;
+    while(true) {
+      // calcualte next auth and hub, accumalate
+      double auth_normalizer = 0;
+      double hub_normalizer = 0;
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        auth_normalizer += pow(tmp_node->calculateNextAuth(), 2);
+        hub_normalizer += pow(tmp_node->calculateNextHub(), 2);
+      }
+      // normalize auth and hub
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        tmp_node->normalizeNextAuth(sqrt(auth_normalizer));
+        tmp_node->normalizeNextHub(sqrt(hub_normalizer));
+      }
+      // update auth and hub
+      for(auto it = base_set.begin(); it != base_set.end(); it++) {
+        PageNode* tmp_node = (*it);
+        break_loop &= tmp_node->update(converge_val);
+      }
+      if (break_loop)
+				break;
+    }
+  }
 
+  // output file
+	ofstream outfile_stream(OUT_FILE.c_str());
+	for(auto it = base_set.begin(); it != base_set.end(); it++) {
+		PageNode* tmp_node = (*it);
+		outfile_stream << tmp_node->dump_id() << "," << tmp_node->getCurrentHub();
+    outfile_stream << "," << tmp_node->getCurrentAuth() << endl;
+	}
+	outfile_stream.close();
 
-
-
-
-
-
+	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
+		delete it->second;
+	}
 
   return 0;
 }
