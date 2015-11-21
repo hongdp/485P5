@@ -78,12 +78,14 @@ int main(int argc, char const *argv[]) {
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 		if (it->second->hasNoOutGoing()) {
 			cout << "Adding edge for node No." << it->first << endl;
-			for (auto destIt = Node_map.begin(); destIt != Node_map.end(); destIt++) {
-				if (destIt->second != it->second) {
-					it->second->addOutLink();
-					destIt->second->addContributor(it->second);
-				}
-			}
+			PageNode::addNodeToNoOut(it->second);
+			it->second->setNumOutLink(num_ver - 1);
+//			for (auto destIt = Node_map.begin(); destIt != Node_map.end(); destIt++) {
+//				if (destIt->second != it->second) {
+//					it->second->addOutLink();
+//					destIt->second->addContributor(it->second);
+//				}
+//			}
 		}
 	}
 	// determine converge type
