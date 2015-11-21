@@ -11,7 +11,7 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  cout << "num " << argc << endl;
+  // cout << "num " << argc << endl;
   if (argc != 8) {
     cout << "Usage: eecs485pa5h <h value> (-k <numiterations> | -converge";
     cout << "<maxchange>) “queries” <input-net-file> ";
@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
   string IN_NET_FILE(argv[5]);
   string IN_INDEX_FILE(argv[6]);
   string OUT_FILE(argv[7]);
-  printf("h = %d, converge_type = %s, converge_val = %f, query = %s, net file = %s, index file = %s, out file = %s\n", h, converge_type.c_str(), converge_val, query.c_str(), IN_NET_FILE.c_str(), IN_INDEX_FILE.c_str(), OUT_FILE.c_str());
+  // printf("h = %d, converge_type = %s, converge_val = %f, query = %s, net file = %s, index file = %s, out file = %s\n", h, converge_type.c_str(), converge_val, query.c_str(), IN_NET_FILE.c_str(), IN_INDEX_FILE.c_str(), OUT_FILE.c_str());
   stringstream squeries;
   squeries << query;
   string tmp_query;
@@ -35,9 +35,9 @@ int main(int argc, char const *argv[]) {
   while(squeries >> tmp_query) {
     queries.push_back(tmp_query);
   }
-  for (auto str : queries) {
-    cout << str << " ";
-  } cout << endl;
+  // for (auto str : queries) {
+  //   cout << str << " ";
+  // } cout << endl;
 
   map<int, PageNode*> Node_map;
   map<string, set<PageNode*> > invert_index_map;
@@ -83,6 +83,7 @@ int main(int argc, char const *argv[]) {
     src_ptr->setDest(dest_ptr);
   }
   in_net_stream.close();
+  cout << "Node_map.size() : " << Node_map.size() << endl;
 
   // read inverted index file
   ifstream in_index_stream(IN_INDEX_FILE.c_str());
@@ -90,7 +91,16 @@ int main(int argc, char const *argv[]) {
     cout << "Failed to open the index file" << endl;
     exit(1);
   }
-  
+  string name;
+  int id;
+  while(in_index_stream >> name >> id) {
+    PageNode* tmp_node = Node_map[id];
+    invert_index_map[name].insert(tmp_node);
+  }
+  in_index_stream.close();
+  cout << "invert_index_map.size() : " << invert_index_map.size() << endl;
+
+
 
 
 
