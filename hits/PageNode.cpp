@@ -80,3 +80,13 @@ void PageNode::setDest(PageNode* dest_ptr){
 void PageNode::setSrc(PageNode* src_ptr){
 	inPointers.insert(src_ptr);
 }
+
+std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedBegin(){
+	return connectedPointers.begin();
+}
+
+std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedEnd(){
+	return connectedPointers.end();
+}
+
+

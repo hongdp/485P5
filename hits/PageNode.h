@@ -28,6 +28,8 @@ public:
 	void intersectWithBase(const std::set<PageNode*, Less_than_ptr<PageNode*> >& BaseSet);
 	void setDest(PageNode* dest_ptr);
 	void setSrc(PageNode* src_ptr);
+	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedBegin();
+	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedEnd();
 private:
 	int pageId;
 	double currentHub;

@@ -81,6 +81,7 @@ int main(int argc, char const *argv[]) {
   bool use_iter = (converge_type == "-k");
   if (use_iter) {
     for (size_t i = size_t(converge_val); i > 0; i--) {
+		cout << "Iteration No." << size_t(converge_val) - i + 1 << endl;
       for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
         it->second->calculateNextPR();
       }
