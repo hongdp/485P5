@@ -15,7 +15,7 @@
 
 class PageNode {
 public:
-	PageNode(int pageId_): pageId(pageId_), currentHub(1), nextHub(1), currentAuth(1), nextAuth(1) {};
+	PageNode(int pageId_): pageId(pageId_), currentHub(1.0),  nextHub(1.0), currentAuth(1.0), nextAuth(1.0){};
 	bool operator<(const PageNode& rhs);
 	double calculateNextHub();
 	double calculateNextAuth();
@@ -36,7 +36,7 @@ private:
 	double nextHub;
 	double currentAuth;
 	double nextAuth;
-	
+
 	std::set<PageNode*, Less_than_ptr<PageNode*> > outPointers;
 	std::set<PageNode*, Less_than_ptr<PageNode*> > inPointers;
 	std::set<PageNode*, Less_than_ptr<PageNode*> > connectedPointers;

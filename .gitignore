@@ -10,3 +10,5 @@
 *.o
 *.net
 /pagerank/pagerank0
+/pagerank/eecs485pa5p
+/hits/eecs485pa5h

@@ -7,7 +7,7 @@
 //
 
 #include "PageNode.h"
-
+#include <algorithm>
 #include <set>
 #include <cmath>
 
@@ -53,7 +53,7 @@ bool PageNode::update(double converge){
 	}
 	currentAuth = nextAuth;
 	currentHub = nextHub;
-	return returnVal
+	return returnVal;
 }
 
 double PageNode::getCurrentHub(){
@@ -88,6 +88,5 @@ std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedB
 std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedEnd(){
 	return connectedPointers.end();
 }
-
 
 
