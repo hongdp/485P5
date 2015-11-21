@@ -38,11 +38,15 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 	PageNode::setGlobalArgs(d, num_ver);
+#ifdef DEBUG
 	cout << "Total num of node: " << num_ver << endl;
+#endif
 	for (size_t i = 0; i < size_t(num_ver); i++) {
+#ifdef DEBUG
 		if (!(i%100000)) {
 			cout << "read in No." << i << " node" << endl;
 		}
+#endif
 		PageNode* tmp_node = new PageNode(1/double(num_ver));
 		int id;
 		string name;
@@ -58,11 +62,15 @@ int main(int argc, char const *argv[]) {
 		cout << "Wrong file format! No *Arcs" << endl;
 		exit(1);
 	}
+#ifdef DEBUG
 	cout << "Total num of edge: " << num_edge << endl;
+#endif
 	for (size_t i = 0; i < size_t(num_edge); i++) {
+#ifdef DEBUG
 		if (!(i%100000)) {
 			cout << "read in No." << i << " edge" << endl;
 		}
+#endif
 		int src, dest;
 		infile_stream >> src >> dest;
 		if (src == dest) {
@@ -91,7 +99,9 @@ int main(int argc, char const *argv[]) {
 	bool use_iter = (converge_type == "-k");
 	if (use_iter) {
 		for (size_t i = size_t(converge_val); i > 0; i--) {
+			#ifdef DEBUG
 			cout << "Iteration No." << size_t(converge_val) - i + 1 << endl;
+			#endif
 			for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 //				cout << "Calculating Node No." << it->first << endl;
 				it->second->calculateNextPR();
@@ -120,12 +130,18 @@ int main(int argc, char const *argv[]) {
 	
 	// output file
 	ofstream outfile_stream(OUT_FILE.c_str());
+#ifdef DEBUG
 	double totalRP = 0;
+#endif
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
+#ifdef DEBUG
 		totalRP += it->second->getCurrentPR();
+#endif
 		outfile_stream << it->first << "," << it->second->getCurrentPR() << endl;
 	}
+#ifdef DEBUG
 	cout << totalRP << endl;
+#endif
 	outfile_stream.close();
 	
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
