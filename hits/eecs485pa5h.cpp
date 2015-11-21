@@ -53,7 +53,8 @@ int main(int argc, char const *argv[]) {
   // read Vertices
   in_net_stream >> ver_title >> num_ver;
   if (ver_title != "*Vertices") {
-    cout << "Wrong file formate no *Vertices" << endl;
+    cout << "Wrong file format! No *Vertices" << endl;
+    exit(1);
   }
   for (size_t i = 0; i < size_t(num_ver); i++) {
     int id;
@@ -67,7 +68,8 @@ int main(int argc, char const *argv[]) {
   int num_edge;
   in_net_stream >> edge_title >> num_edge;
   if (edge_title != "*Arcs") {
-    cout << "Wrong file formate no *Arcs" << endl;
+    cout << "Wrong file format! No *Arcs" << endl;
+    exit(1);
   }
   for (size_t i = 0; i < size_t(num_edge); i++) {
     int src, dest;
@@ -81,6 +83,14 @@ int main(int argc, char const *argv[]) {
     src_ptr->setDest(dest_ptr);
   }
   in_net_stream.close();
+
+  // read inverted index file
+  ifstream in_index_stream(IN_INDEX_FILE.c_str());
+  if (!in_index_stream.is_open()) {
+    cout << "Failed to open the index file" << endl;
+    exit(1);
+  }
+  
 
 
 

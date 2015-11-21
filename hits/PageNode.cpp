@@ -7,7 +7,7 @@
 //
 
 #include "PageNode.h"
-
+#include <algorithm>
 #include <set>
 #include <cmath>
 
@@ -53,7 +53,7 @@ bool PageNode::update(double converge){
 	}
 	currentAuth = nextAuth;
 	currentHub = nextHub;
-	return returnVal
+	return returnVal;
 }
 
 double PageNode::getCurrentHub(){
@@ -80,6 +80,3 @@ void PageNode::setDest(PageNode* dest_ptr){
 void PageNode::setSrc(PageNode* src_ptr){
 	inPointers.insert(src_ptr);
 }
-
-
-

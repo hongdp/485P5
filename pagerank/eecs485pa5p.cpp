@@ -34,7 +34,8 @@ int main(int argc, char const *argv[]) {
   // read Vertices
   infile_stream >> ver_title >> num_ver;
   if (ver_title != "*Vertices") {
-    cout << "Wrong file formate no *Vertices" << endl;
+    cout << "Wrong file format! No *Vertices" << endl;
+    exit(1);
   }
   PageNode::setGlobalArgs(d, num_ver);
   for (size_t i = 0; i < size_t(num_ver); i++) {
@@ -50,7 +51,8 @@ int main(int argc, char const *argv[]) {
   int num_edge;
   infile_stream >> edge_title >> num_edge;
   if (edge_title != "*Arcs") {
-    cout << "Wrong file formate no *Arcs" << endl;
+    cout << "Wrong file format! No *Arcs" << endl;
+    exit(1);
   }
   for (size_t i = 0; i < size_t(num_edge); i++) {
     int src, dest;
@@ -110,7 +112,7 @@ int main(int argc, char const *argv[]) {
   }
 	cout << totalRP << endl;
   outfile_stream.close();
-	
+
   for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
     delete it->second;
   }
