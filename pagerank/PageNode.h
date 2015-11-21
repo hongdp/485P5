@@ -22,11 +22,15 @@ public:
 	void updatePR();
 	bool updatePR(double converge);
 	bool hasNoOutGoing();
+	void setNumOutLink(int numOutLink);
 	static void setGlobalArgs(double d, int N);
+	static void addNodeToNoOut(const PageNode*);
+	
 private:
 	double currentPR;
 	double nextPR;
 	std::vector<const PageNode*> contributors;
+	static std::vector<const PageNode*> nodesWithNoOut;
 	int numOutLinks;
 	static double d;
 	static int N;
