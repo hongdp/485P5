@@ -15,7 +15,7 @@
 
 class PageNode {
 public:
-	PageNode(int pageId_): pageId(pageId_), currentAuth(1.0), currentHub(1.0), nextAuth(1.0), nextHub(1.0){};
+	PageNode(int pageId_): pageId(pageId_), currentHub(1.0),  nextHub(1.0), currentAuth(1.0), nextAuth(1.0){};
 	bool operator<(const PageNode& rhs);
 	double calculateNextHub();
 	double calculateNextAuth();
