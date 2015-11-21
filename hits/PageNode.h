@@ -30,6 +30,7 @@ public:
 	void setSrc(PageNode* src_ptr);
 	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedBegin();
 	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedEnd();
+	int dump_id() {return pageId;};
 private:
 	int pageId;
 	double currentHub;

@@ -6,6 +6,7 @@
 #include <set>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 #include "PageNode.h"
 
 using namespace std;
@@ -99,6 +100,24 @@ int main(int argc, char const *argv[]) {
   }
   in_index_stream.close();
   cout << "invert_index_map.size() : " << invert_index_map.size() << endl;
+
+  // construct seed set
+  set<PageNode*> seed_set;
+  for (auto str : queries) {
+    auto it_begin = invert_index_map[str].begin();
+    auto it_end = invert_index_map[str].end();
+    seed_set.insert(it_begin, it_end);
+    cout << str << ", set size:" << invert_index_map[str].size() << endl;
+    cout << "seed_set size: " << seed_set.size() << endl;
+    // cout << "[";
+    // for (auto ptr : seed_set) {
+    //   cout << ptr->dump_id() << " ";
+    // } cout << "]" << endl;
+  }
+  // construct base set
+  for (auto it = seed_set.begin(); it != seed_set.end(); it++) {
+    PageNode* tmp_node = *it;
+  }
 
 
 

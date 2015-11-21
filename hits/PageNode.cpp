@@ -75,10 +75,12 @@ void PageNode::intersectWithBase(const set<PageNode*, Less_than_ptr<PageNode*> >
 
 void PageNode::setDest(PageNode* dest_ptr){
 	outPointers.insert(dest_ptr);
+	connectedPointers.insert(dest_ptr);
 }
 
 void PageNode::setSrc(PageNode* src_ptr){
 	inPointers.insert(src_ptr);
+	connectedPointers.insert(src_ptr);
 }
 
 std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedBegin(){
@@ -88,5 +90,3 @@ std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedB
 std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator PageNode::getConnectedEnd(){
 	return connectedPointers.end();
 }
-
-
