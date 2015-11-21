@@ -15,7 +15,7 @@
 
 class PageNode {
 public:
-	PageNode(int pageId_): pageId(pageId_), currentAuth(1), currentHub(1), nextAuth(1), nextHub(1){};
+	PageNode(int pageId_): pageId(pageId_), currentHub(1), nextHub(1), currentAuth(1), nextAuth(1) {};
 	bool operator<(const PageNode& rhs);
 	double calculateNextHub();
 	double calculateNextAuth();
@@ -28,6 +28,8 @@ public:
 	void intersectWithBase(const std::set<PageNode*, Less_than_ptr<PageNode*> >& BaseSet);
 	void setDest(PageNode* dest_ptr);
 	void setSrc(PageNode* src_ptr);
+	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedBegin();
+	std::set<PageNode*, Less_than_ptr<PageNode*> >::iterator getConnectedEnd();
 private:
 	int pageId;
 	double currentHub;
