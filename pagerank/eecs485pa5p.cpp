@@ -77,9 +77,8 @@ int main(int argc, char const *argv[]) {
 	
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 		if (it->second->hasNoOutGoing()) {
-			cout << "Adding edge for node No." << it->first << endl;
-			PageNode::addNodeToNoOut(it->second);
-			it->second->setNumOutLink(num_ver - 1);
+//			cout << "Adding edge for node No." << it->first << endl;
+			PageNode::addNoOut();
 //			for (auto destIt = Node_map.begin(); destIt != Node_map.end(); destIt++) {
 //				if (destIt->second != it->second) {
 //					it->second->addOutLink();
@@ -94,13 +93,14 @@ int main(int argc, char const *argv[]) {
 		for (size_t i = size_t(converge_val); i > 0; i--) {
 			cout << "Iteration No." << size_t(converge_val) - i + 1 << endl;
 			for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
-				cout << "Calculating Node No." << it->first << endl;
+//				cout << "Calculating Node No." << it->first << endl;
 				it->second->calculateNextPR();
 			}
 			for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
-				cout << "Updating Node No." << it->first << endl;
+//				cout << "Updating Node No." << it->first << endl;
 				it->second->updatePR();
 			}
+			PageNode::updateNoOutPR();
 		}
 	} else {
 		bool break_loop = false;
@@ -112,6 +112,7 @@ int main(int argc, char const *argv[]) {
 			for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 				break_loop &= it->second->updatePR(converge_val);
 			}
+			PageNode::updateNoOutPR();
 			if (break_loop)
 				break;
 		}

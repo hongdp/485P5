@@ -15,7 +15,9 @@ using namespace std;
 
 double PageNode::d;
 int PageNode::N;
-vector<const PageNode*> PageNode::nodesWithNoOut;
+double PageNode::currentTotalNoOutPR = .0;
+double PageNode::nextTotalNoOutPR = .0;
+int PageNode::numNodesWithNoOut = 0;
 
 void PageNode::addOutLink(){
 	numOutLinks++;
@@ -26,10 +28,11 @@ void PageNode::calculateNextPR(){
 	for (const PageNode* nodePtr : contributors) {
 		nextPR += d*nodePtr->getContribution();
 	}
-	for (const PageNode* nodePtr : nodesWithNoOut) {
-		if (nodePtr != this) {
-			nextPR += d*nodePtr->getContribution();
-		}
+	if (numOutLinks == 0) {
+		nextPR += d*(currentTotalNoOutPR - currentPR)/(N - 1);
+		nextTotalNoOutPR += nextPR;
+	} else {
+		nextPR += d*currentTotalNoOutPR/(N - 1);
 	}
 }
 
@@ -40,6 +43,11 @@ double PageNode::getCurrentPR() const {
 void PageNode::updatePR(){
 	currentPR = nextPR;
 	nextPR = 0;
+}
+
+void PageNode::updateNoOutPR(){
+	currentTotalNoOutPR = nextTotalNoOutPR;
+	nextTotalNoOutPR = 0;
 }
 
 bool PageNode::updatePR(double converge){
@@ -69,10 +77,7 @@ bool PageNode::hasNoOutGoing(){
 	return !numOutLinks;
 }
 
-void PageNode::setNumOutLink(int numOutLinks_){
-	numOutLinks = numOutLinks_;
-}
-
-void PageNode::addNodeToNoOut(const PageNode* node_ptr){
-	nodesWithNoOut.push_back(node_ptr);
+void PageNode::addNoOut(){
+	numNodesWithNoOut++;
+	currentTotalNoOutPR += 1.0/N;
 }
