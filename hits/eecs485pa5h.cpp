@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]) {
   // } cout << endl;
 
   map<int, PageNode*> Node_map;
-  map<string, set<PageNode*> > invert_index_map;
+  map<string, set<PageNode*, Less_than_ptr<PageNode*> > > invert_index_map;
 
   // read net file
   string ver_title;
@@ -102,7 +102,7 @@ int main(int argc, char const *argv[]) {
   cout << "invert_index_map.size() : " << invert_index_map.size() << endl;
 
   // construct seed set
-  set<PageNode*> seed_set;
+  set<PageNode*, Less_than_ptr<PageNode*> > seed_set;
   for (auto str : queries) {
     auto it_begin = invert_index_map[str].begin();
     auto it_end = invert_index_map[str].end();
@@ -115,9 +115,32 @@ int main(int argc, char const *argv[]) {
     // } cout << "]" << endl;
   }
   // construct base set
+  set<PageNode*, Less_than_ptr<PageNode*> > base_set(seed_set);
   for (auto it = seed_set.begin(); it != seed_set.end(); it++) {
-    PageNode* tmp_node = *it;
+    auto it_inc = (*it)->getConnectedBegin();
+    auto it_end = (*it)->getConnectedEnd();
+    int counter = 0;
+    while(counter < 50 && it_inc != it_end) {
+      PageNode* tmp_node = *it_inc;
+      it_inc++;
+      if (seed_set.find(tmp_node) != seed_set.end())
+        continue;
+      else
+        base_set.insert(tmp_node);
+      counter++;
+    }
+    // cout << "counter for id " << (*it)->dump_id() << " is: " << counter << endl;
   }
+  cout << "base_set size: " << base_set.size() << endl;
+
+  // pre-process PageNode
+  for(auto it = base_set.begin(); it != base_set.end(); it++) {
+    PageNode* tmp_node = (*it);
+    tmp_node->intersectWithBase(base_set);
+  }
+
+  bool use_iter = (converge_type == "-k");
+
 
 
 
