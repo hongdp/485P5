@@ -119,10 +119,14 @@ int main(int argc, char const *argv[]) {
 	// construct seed set
 	set<PageNode*, Less_than_ptr<PageNode*> > temp_seed_set;
 	set<PageNode*, Less_than_ptr<PageNode*> > seed_set;
+  if (!queries.empty())
+    temp_seed_set = invert_index_map[queries[0]];
 	for (auto str : queries) {
 		auto it_begin = invert_index_map[str].begin();
 		auto it_end = invert_index_map[str].end();
-		temp_seed_set.insert(it_begin, it_end);
+    set<PageNode*, Less_than_ptr<PageNode*> > temp_set;
+    set_intersection(temp_seed_set.begin(), temp_seed_set.end(), it_begin, it_end, inserter(temp_set, temp_set.begin()));
+    temp_seed_set = temp_set;
 		cout << str << ", set size:" << invert_index_map[str].size() << endl;
 		cout << "seed_set size: " << temp_seed_set.size() << endl;
 		// cout << "[";
