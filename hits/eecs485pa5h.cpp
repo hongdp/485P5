@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cmath>
+#include <cctype>
 #include <map>
 #include <set>
 #include <vector>
@@ -11,6 +12,17 @@
 #include "PageNode.h"
 
 using namespace std;
+
+void ProcessString(string &str) {
+  auto c = str.begin();
+  while ( c != str.end()) {
+    *c = tolower(*c);
+    if (isalnum(*c))
+      c++;
+    else
+      str.erase(c);
+  }
+}
 
 int main(int argc, char const *argv[]) {
   // cout << "num " << argc << endl;
@@ -35,6 +47,7 @@ int main(int argc, char const *argv[]) {
   string tmp_query;
   vector<string> queries;
   while(squeries >> tmp_query) {
+    ProcessString(tmp_query);
     queries.push_back(tmp_query);
   }
   // for (auto str : queries) {
@@ -97,6 +110,7 @@ int main(int argc, char const *argv[]) {
   int id;
   while(in_index_stream >> name >> id) {
     PageNode* tmp_node = Node_map[id];
+    ProcessString(name);
     invert_index_map[name].insert(tmp_node);
   }
   in_index_stream.close();
@@ -115,6 +129,7 @@ int main(int argc, char const *argv[]) {
     //   cout << ptr->dump_id() << " ";
     // } cout << "]" << endl;
   }
+
   // construct base set
   set<PageNode*, Less_than_ptr<PageNode*> > base_set(seed_set);
   for (auto it = seed_set.begin(); it != seed_set.end(); it++) {
@@ -193,11 +208,16 @@ int main(int argc, char const *argv[]) {
 
   // output file
 	ofstream outfile_stream(OUT_FILE.c_str());
+  double accumalate_hub, accumalate_auth;
 	for(auto it = base_set.begin(); it != base_set.end(); it++) {
 		PageNode* tmp_node = (*it);
 		outfile_stream << tmp_node->dump_id() << "," << tmp_node->getCurrentHub();
     outfile_stream << "," << tmp_node->getCurrentAuth() << endl;
+    accumalate_hub += pow(tmp_node->getCurrentHub(), 2);
+    accumalate_auth += pow(tmp_node->getCurrentAuth(), 2);
 	}
+  cout << "accumalate_hub (should be 1) : " << accumalate_hub << endl;
+  cout << "accumalate_auth (should be 1) : " << accumalate_auth << endl;
 	outfile_stream.close();
 
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
