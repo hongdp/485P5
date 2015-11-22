@@ -119,7 +119,7 @@ int main(int argc, char const *argv[]) {
 	int counter = 0;
 	for (auto it = temp_seed_set.begin(); counter < h && it != temp_seed_set.end(); it++) {
 		seed_set.insert(*it);
-		h++;
+		counter++;
 	}
 	// construct base set
 	set<PageNode*, Less_than_ptr<PageNode*> > base_set(seed_set);
