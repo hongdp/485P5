@@ -25,7 +25,9 @@ void ProcessString(string &str) {
 }
 
 int main(int argc, char const *argv[]) {
-	// cout << "num " << argc << endl;
+  #ifdef DEBUG
+	cout << "num " << argc << endl;
+  #endif
 	if (argc != 8) {
 		cout << "Usage: eecs485pa5h <h value> (-k <numiterations> | -converge";
 		cout << "<maxchange>) “queries” <input-net-file> ";
@@ -50,9 +52,11 @@ int main(int argc, char const *argv[]) {
     ProcessString(tmp_query);
 		queries.push_back(tmp_query);
 	}
-	// for (auto str : queries) {
-	//   cout << str << " ";
-	// } cout << endl;
+  #ifdef DEBUG
+	for (auto str : queries) {
+	  cout << str << " ";
+	} cout << endl;
+  #endif
 
 	map<int, PageNode*> Node_map;
 	map<string, set<PageNode*, Less_than_ptr<PageNode*> > > invert_index_map;
@@ -98,8 +102,9 @@ int main(int argc, char const *argv[]) {
 		src_ptr->setDest(dest_ptr);
 	}
 	in_net_stream.close();
+  #ifdef DEBUG
 	cout << "Node_map.size() : " << Node_map.size() << endl;
-
+  #endif
 	// read inverted index file
 	ifstream in_index_stream(IN_INDEX_FILE.c_str());
 	if (!in_index_stream.is_open()) {
@@ -114,17 +119,25 @@ int main(int argc, char const *argv[]) {
 		invert_index_map[name].insert(tmp_node);
 	}
 	in_index_stream.close();
+  #ifdef DEBUG
 	cout << "invert_index_map.size() : " << invert_index_map.size() << endl;
+  #endif
 
 	// construct seed set
 	set<PageNode*, Less_than_ptr<PageNode*> > temp_seed_set;
 	set<PageNode*, Less_than_ptr<PageNode*> > seed_set;
+  if (!queries.empty())
+    temp_seed_set = invert_index_map[queries[0]];
 	for (auto str : queries) {
 		auto it_begin = invert_index_map[str].begin();
 		auto it_end = invert_index_map[str].end();
-		temp_seed_set.insert(it_begin, it_end);
+    set<PageNode*, Less_than_ptr<PageNode*> > temp_set;
+    set_intersection(temp_seed_set.begin(), temp_seed_set.end(), it_begin, it_end, inserter(temp_set, temp_set.begin()));
+    temp_seed_set = temp_set;
+    #ifdef DEBUG
 		cout << str << ", set size:" << invert_index_map[str].size() << endl;
 		cout << "seed_set size: " << temp_seed_set.size() << endl;
+    #endif
 		// cout << "[";
 		// for (auto ptr : seed_set) {
 		//   cout << ptr->dump_id() << " ";
@@ -135,8 +148,9 @@ int main(int argc, char const *argv[]) {
 		seed_set.insert(*it);
 		counter++;
 	}
+  #ifdef DEBUG
   cout << "final seed_set size: " << seed_set.size() << endl;
-
+  #endif
 	// construct base set
 	set<PageNode*, Less_than_ptr<PageNode*> > base_set(seed_set);
 	for (auto it = seed_set.begin(); it != seed_set.end(); it++) {
@@ -154,7 +168,9 @@ int main(int argc, char const *argv[]) {
 		}
 		// cout << "counter for id " << (*it)->dump_id() << " is: " << counter << endl;
 	}
+  #ifdef DEBUG
 	cout << "base_set size: " << base_set.size() << endl;
+  #endif
 
 	// pre-process PageNode
 	for(auto it = base_set.begin(); it != base_set.end(); it++) {
@@ -215,16 +231,23 @@ int main(int argc, char const *argv[]) {
 
 	// output file
 	ofstream outfile_stream(OUT_FILE.c_str());
-  double accumalate_hub, accumalate_auth;
+  #ifdef DEBUG
+  double accumalate_hub = 0;
+  double accumalate_auth = 0;
+  #endif
 	for(auto it = base_set.begin(); it != base_set.end(); it++) {
 		PageNode* tmp_node = (*it);
 		outfile_stream << tmp_node->dump_id() << "," << tmp_node->getCurrentHub();
     outfile_stream << "," << tmp_node->getCurrentAuth() << endl;
+    #ifdef DEBUG
     accumalate_hub += pow(tmp_node->getCurrentHub(), 2);
     accumalate_auth += pow(tmp_node->getCurrentAuth(), 2);
+    #endif
 	}
+  #ifdef DEBUG
   cout << "accumalate_hub (should be 1) : " << accumalate_hub << endl;
   cout << "accumalate_auth (should be 1) : " << accumalate_auth << endl;
+  #endif
 	outfile_stream.close();
 
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
