@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <map>
+#include <iomanip>
 #include "PageNode.h"
 
 using namespace std;
@@ -130,6 +131,7 @@ int main(int argc, char const *argv[]) {
 	
 	// output file
 	ofstream outfile_stream(OUT_FILE.c_str());
+    outfile_stream << std::setprecision(4);
 #ifdef DEBUG
 	double totalRP = 0;
 #endif
