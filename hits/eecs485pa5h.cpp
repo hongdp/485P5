@@ -215,7 +215,8 @@ int main(int argc, char const *argv[]) {
 
 	// output file
 	ofstream outfile_stream(OUT_FILE.c_str());
-  double accumalate_hub, accumalate_auth;
+  double accumalate_hub = 0;
+  double accumalate_auth = 0;
 	for(auto it = base_set.begin(); it != base_set.end(); it++) {
 		PageNode* tmp_node = (*it);
 		outfile_stream << tmp_node->dump_id() << "," << tmp_node->getCurrentHub();
