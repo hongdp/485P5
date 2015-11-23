@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <cassert>
 #include <cstdlib>
@@ -239,8 +240,8 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// output file
-  cout.precision(6);
 	ofstream outfile_stream(OUT_FILE.c_str());
+  outfile_stream << std::setprecision(6);
   #ifdef DEBUG
   double accumalate_hub = 0;
   double accumalate_auth = 0;

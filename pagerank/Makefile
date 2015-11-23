@@ -38,6 +38,15 @@ all: $(OBJECTS)
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE) $(SUBMIT_FILE) $(OUTPUT_FILE)
 
+# TEST CASE
+testsample:
+	time ./eecs485pa5p 0.85 -k 10 small.net.txt pagerank0.out
+testconv0:
+	time ./eecs485pa5p 0.7 -converge 0.001 small.net.txt pagerank1.out
+testconv1:
+	time ./eecs485pa5p 0.7 -converge 0.0001 large.net pagerank2.out
+
+
 # these targets do not create any files
 .PHONY: all release debug profile clean
 # disable built-in rules

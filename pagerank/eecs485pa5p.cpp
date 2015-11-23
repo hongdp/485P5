@@ -15,14 +15,14 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 	assert(argv);
-	
+
 	// init with input arguement
 	double d = atof(argv[1]);
 	string converge_type(argv[2]);
 	double converge_val = atof(argv[3]);
 	string IN_FILE(argv[4]);
 	string OUT_FILE(argv[5]);
-	
+
 	// Read file
 	map<int, PageNode*> Node_map;
 	ifstream infile_stream(IN_FILE.c_str());
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]) {
 		infile_stream >> id >> name;
 		Node_map[id] = tmp_node;
 	}
-	
+
 	// read edges
 	string edge_title;
 	int num_edge;
@@ -83,7 +83,7 @@ int main(int argc, char const *argv[]) {
 		src_ptr->addOutLink();
 	}
 	infile_stream.close();
-	
+
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 		if (it->second->hasNoOutGoing()) {
 //			cout << "Adding edge for node No." << it->first << endl;
@@ -115,7 +115,14 @@ int main(int argc, char const *argv[]) {
 		}
 	} else {
 		bool break_loop = false;
+		#ifdef DEBUG
+		int iteration = 0;
+		#endif
 		while(true) {
+			#ifdef DEBUG
+			iteration++;
+			cout << "Iteration NO." << iteration << endl;
+			#endif
 			break_loop = true;
 			for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 				it->second->calculateNextPR();
@@ -128,10 +135,10 @@ int main(int argc, char const *argv[]) {
 				break;
 		}
 	}
-	
+
 	// output file
 	ofstream outfile_stream(OUT_FILE.c_str());
-    outfile_stream << std::setprecision(4);
+    outfile_stream << std::setprecision(6);
 #ifdef DEBUG
 	double totalRP = 0;
 #endif
@@ -145,10 +152,10 @@ int main(int argc, char const *argv[]) {
 	cout << totalRP << endl;
 #endif
 	outfile_stream.close();
-	
+
 	for (auto it = Node_map.begin(); it != Node_map.end(); it++) {
 		delete it->second;
 	}
-	
+
 	return 0;
 }
