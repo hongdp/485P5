@@ -38,6 +38,15 @@ all: $(OBJECTS)
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE) $(SUBMIT_FILE) $(OUTPUT_FILE)
 
+#TEST CASE
+testsample:
+	time ./eecs485pa5h 100 -k 10 "iPhone Microsoft" hits.net.txt hits_invindex hits3.out
+testconv0:
+	time ./eecs485pa5h 50 -converge 0.01 "iPhone Microsoft" hits.net.txt hits_invindex hits0.out
+testconv1:
+	time ./eecs485pa5h 50 -converge 0.0001 "iPhone Microsoft" hits.net.txt hits_invindex hits0.out
+
+
 # these targets do not create any files
 .PHONY: all release debug profile clean
 # disable built-in rules

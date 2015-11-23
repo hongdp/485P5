@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <set>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -48,7 +49,8 @@ void PageNode::update(){
 
 bool PageNode::update(double converge){
 	bool returnVal = false;
-	if (abs(nextHub - currentHub)/currentHub <= converge && abs(nextAuth - currentAuth)/currentAuth <= converge) {
+	if ((currentHub == 0 || abs(nextHub - currentHub)/currentHub <= converge)
+			&& (currentAuth == 0 || abs(nextAuth - currentAuth)/currentAuth <= converge)) {
 		returnVal = true;
 	}
 	currentAuth = nextAuth;

@@ -180,6 +180,9 @@ int main(int argc, char const *argv[]) {
 
 	// Iterations
 	bool use_iter = (converge_type == "-k");
+  #ifdef DEBUG
+  int num_iter = 0;
+  #endif
 	if (use_iter) {
 		for (size_t i = size_t(converge_val); i > 0; i--) {
 			// calcualte next auth and hub, accumalate
@@ -205,6 +208,11 @@ int main(int argc, char const *argv[]) {
 	} else {
 		bool break_loop = false;
 		while(true) {
+      #ifdef DEBUG
+      num_iter++;
+      cout << "Iteration NO." << num_iter << endl;
+      #endif
+      break_loop = true;
 			// calcualte next auth and hub, accumalate
 			double auth_normalizer = 0;
 			double hub_normalizer = 0;
@@ -220,6 +228,7 @@ int main(int argc, char const *argv[]) {
 				tmp_node->normalizeNextHub(sqrt(hub_normalizer));
 			}
 			// update auth and hub
+      assert(break_loop);
 			for(auto it = base_set.begin(); it != base_set.end(); it++) {
 				PageNode* tmp_node = (*it);
 				break_loop &= tmp_node->update(converge_val);
@@ -230,6 +239,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// output file
+  cout.precision(6);
 	ofstream outfile_stream(OUT_FILE.c_str());
   #ifdef DEBUG
   double accumalate_hub = 0;
